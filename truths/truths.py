@@ -18,6 +18,7 @@
 import itertools
 from prettytable import PrettyTable
 import re
+import csv
 
 
 class Gob(object):
@@ -59,6 +60,13 @@ class Truths(object):
             return [int(item) for item in row]
         else:
             return row
+    
+    def save_csv(self, file_name='truths.csv'):
+        with open(file_name, mode='w') as f:
+            writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            writer.writerow(self.base + self.phrases)
+            for conditions_set in self.base_conditions:
+                writer.writerow(self.calculate(*conditions_set))
 
     def __str__(self):
         t = PrettyTable(self.base + self.phrases)
